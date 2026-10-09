@@ -27,6 +27,7 @@
 import express from "express";
 import { homePage } from "../controllers/homeController.js";
 import { product } from "../controllers/product.js";
+import { library } from "../controllers/library.js";
 const router = express.Router();
 router.get("/", homePage);
 
@@ -43,7 +44,12 @@ router.post("/products", product.insert);
 router.get("/products", product.all);
 router.get("/product/:id", product.isa);
 
-
+//library
+router.post("/library", library.insert);
+router.get("/library", library.all);
+router.get("/library/:id", library.one);
+router.put("/library/:id", library.update);
+router.delete("/library/:id", library.delete);
 
 
 export default router;

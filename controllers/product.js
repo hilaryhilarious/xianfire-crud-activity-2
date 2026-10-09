@@ -23,58 +23,25 @@
     SOFTWARE.
     */
 import { Product, sequelize } from "../models/Product.js";
-
 await sequelize.sync();
-
-const product = {
+const product ={
   index: async (req, res) => {
     res.send("Index Page");
   },
-
-  insert: async (req, res) => {
-    try {
-      const { name, description, category, price, stock } = req.body || {};
-
-      if (!name || !description || !category || price === undefined || stock === undefined) {
-        return res.status(400).json({
-          message: "Missing required product fields."
-        });
-      }
-
-      const newProduct = await Product.create({ name, description, category, price, stock });
-      return res.status(201).json(newProduct);
-    } catch (error) {
-      return res.status(500).json({
-        message: "Failed to create product.",
-        error: error.message
-      });
-    }
+  insert:async (req,res) => {
+    const {name, description, category, price, stock} = req.body;
+    await Product.create({name, description, category, price, stock});
   },
-
-  all: async (req, res) => {
-    try {
-      const prod = await Product.findAll();
-      return res.json({ prod });
-    } catch (error) {
-      return res.status(500).json({
-        message: "Failed to fetch products.",
-        error: error.message
-      });
-    }
+  all: async(req,res) =>{
+    const prod = await Product.findAll();
+    res.json({
+      prod
+    })
   },
-
-  isa: async (req, res) => {
-    try {
-      const { id } = req.params;
-      const data = await Product.findByPk(id);
-      return res.json({ data });
-    } catch (error) {
-      return res.status(500).json({
-        message: "Failed to fetch product.",
-        error: error.message
-      });
-    }
+  isa: async(req, res) =>{
+    const{id} = req.params;
+    const data = await Product.findByPk(id);
+    res.json({data});
   }
 };
-
 export { product };
